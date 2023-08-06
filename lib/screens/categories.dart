@@ -6,7 +6,8 @@ import 'package:recipes_app/screens/meals.dart';
 import 'package:recipes_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  final void Function(Meal meal) onToggleFavourite;
+  const CategoriesScreen({super.key, required this.onToggleFavourite});
 
   void _selectCategory(BuildContext context, Category category) {
     List<Meal> filteredMeals = getFilteredMeals(category);
@@ -15,6 +16,7 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) => MealsScreen(
           title: category.title,
           meals: filteredMeals,
+          onToggleFavourite: onToggleFavourite,
         ),
       ),
     );
@@ -22,29 +24,24 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick your category'),
+    return GridView(
+      padding: const EdgeInsets.all(24),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
-      body: GridView(
-        padding: const EdgeInsets.all(24),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        children: [
-          ...availableCategories
-              .map((category) => CategoryGridItem(
-                    category: category,
-                    onSelectCategory: () {
-                      _selectCategory(context, category);
-                    },
-                  ))
-              .toList(),
-        ],
-      ),
+      children: [
+        ...availableCategories
+            .map((category) => CategoryGridItem(
+                  category: category,
+                  onSelectCategory: () {
+                    _selectCategory(context, category);
+                  },
+                ))
+            .toList(),
+      ],
     );
   }
 }

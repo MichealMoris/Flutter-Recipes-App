@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:recipes_app/models/meal.dart';
 
-class MealDetailsScreen extends StatefulgitWidget {
+class MealDetailsScreen extends StatefulWidget {
   final Meal meal;
-  const MealDetailsScreen({super.key, required this.meal});
+  final void Function(Meal meal) onToggleFavourite;
+  const MealDetailsScreen({
+    super.key,
+    required this.meal,
+    required this.onToggleFavourite,
+  });
 
   @override
   State<MealDetailsScreen> createState() => _MealDetailsScreenState();
@@ -16,12 +21,12 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       appBar: AppBar(
         title: Text(
           widget.meal.title,
-          softWrap: true,
-          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              widget.onToggleFavourite(widget.meal);
+            },
             icon: const Icon(Icons.star),
           ),
         ],
@@ -30,19 +35,23 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
         child: Center(
           child: Column(
             children: [
-              Image.network(widget.meal.imageUrl),
+              Image.network(
+                widget.meal.imageUrl,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
               const SizedBox(
-                height: 20,
+                height: 14,
               ),
               Text(
                 'Ingredients',
-                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(
-                height: 20,
+                height: 14,
               ),
               ...widget.meal.ingredients
                   .map((ingredient) => Padding(
@@ -61,7 +70,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                       ))
                   .toList(),
               const SizedBox(
-                height: 20,
+                height: 24,
               ),
               Text(
                 'Steps',
@@ -71,7 +80,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                     ),
               ),
               const SizedBox(
-                height: 20,
+                height: 14,
               ),
               ...widget.meal.steps
                   .map((step) => Padding(

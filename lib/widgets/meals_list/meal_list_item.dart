@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:recipes_app/data/dummy_data.dart';
 import 'package:recipes_app/models/meal.dart';
-import 'package:recipes_app/screens/meal_details.dart';
 import 'package:recipes_app/widgets/meals_list/meal_item_data.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealListItem extends StatelessWidget {
   final Meal meal;
-  const MealListItem({super.key, required this.meal});
-
-  void _mealClick(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => MealDetailsScreen(meal: meal),
-      ),
-    );
-  }
+  final void Function(Meal meal) onMealSelected;
+  const MealListItem(
+      {super.key, required this.meal, required this.onMealSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +23,7 @@ class MealListItem extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          _mealClick(context);
+          onMealSelected(meal);
         },
         child: Stack(
           children: [
