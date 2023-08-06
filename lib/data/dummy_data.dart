@@ -408,12 +408,6 @@ const dummyMeals = [
   ),
 ];
 
-List<Meal> getFilteredMeals(Category category) {
-  return dummyMeals
-      .where((meal) => meal.categories.contains(category.id))
-      .toList();
-}
-
 String capitilize(String text) {
   return text[0].toUpperCase() + text.substring(1);
 }
