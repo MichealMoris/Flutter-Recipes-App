@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipes_app/models/meal.dart';
+import 'package:recipes_app/providers/favourites_provider.dart';
 
-class MealDetailsScreen extends StatefulWidget {
+class MealDetailsScreen extends ConsumerWidget {
   final Meal meal;
-  final void Function(Meal meal) onToggleFavourite;
   const MealDetailsScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavourite,
   });
 
   @override
-  State<MealDetailsScreen> createState() => _MealDetailsScreenState();
-}
-
-class _MealDetailsScreenState extends State<MealDetailsScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favourites = ref.watch(favouriteMealsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.meal.title,
+          meal.title,
         ),
         actions: [
           IconButton(
             onPressed: () {
-              widget.onToggleFavourite(widget.meal);
+              final isAdded = ref
+                  .read(favouriteMealsProvider.notifier)
+                  .toggleMealFavouriteStatus(meal);
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(isAdded
+                      ? 'Marked as Favourite.'
+                      : 'This meal is not favourite anymore.'),
+                ),
+              );
             },
-            icon: const Icon(Icons.star),
+            icon: Icon(favourites.contains(meal) ? Icons.star : Icons.star_border_outlined),
           ),
         ],
       ),
@@ -36,7 +42,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
           child: Column(
             children: [
               Image.network(
-                widget.meal.imageUrl,
+                meal.imageUrl,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -53,7 +59,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
               const SizedBox(
                 height: 14,
               ),
-              ...widget.meal.ingredients
+              ...meal.ingredients
                   .map((ingredient) => Padding(
                         padding: const EdgeInsets.all(2),
                         child: Text(
@@ -82,7 +88,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
               const SizedBox(
                 height: 14,
               ),
-              ...widget.meal.steps
+              ...meal.steps
                   .map((step) => Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text(
