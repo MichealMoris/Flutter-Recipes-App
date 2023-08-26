@@ -33,7 +33,22 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(favourites.contains(meal) ? Icons.star : Icons.star_border_outlined),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(
+                  scale: Tween(begin: 0.0, end: 1.0).animate(
+                      animation), // is equivelant to 'scale: animation' but with 'Tween()' u have more detalied controls. 
+                  child: child,
+                );
+              },
+              child: Icon(
+                favourites.contains(meal)
+                    ? Icons.star
+                    : Icons.star_border_outlined,
+                key: ValueKey(favourites.contains(meal)),
+              ),
+            ),
           ),
         ],
       ),
