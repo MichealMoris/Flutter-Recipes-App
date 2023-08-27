@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:recipes_app/models/meal.dart';
 import 'package:recipes_app/screens/meal_details.dart';
 import 'package:recipes_app/widgets/meals_list/meals_list.dart';
@@ -11,8 +12,12 @@ class MealsScreen extends StatelessWidget {
 
   void _mealClick(BuildContext context, Meal meal) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => MealDetailsScreen(
+      PageTransition(
+        type: PageTransitionType.bottomToTop,
+        duration: const Duration(milliseconds: 600),
+        reverseDuration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+        child: MealDetailsScreen(
           meal: meal,
         ),
       ),

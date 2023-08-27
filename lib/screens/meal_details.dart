@@ -38,7 +38,7 @@ class MealDetailsScreen extends ConsumerWidget {
               transitionBuilder: (child, animation) {
                 return ScaleTransition(
                   scale: Tween(begin: 0.0, end: 1.0).animate(
-                      animation), // is equivelant to 'scale: animation' but with 'Tween()' u have more detalied controls. 
+                      animation), // is equivelant to 'scale: animation' but with 'Tween()' u have more detalied controls.
                   child: child,
                 );
               },
@@ -56,10 +56,13 @@ class MealDetailsScreen extends ConsumerWidget {
         child: Center(
           child: Column(
             children: [
-              Image.network(
-                meal.imageUrl,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Hero(
+                tag: meal.id,
+                child: Image.network(
+                  meal.imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(
                 height: 14,
@@ -80,13 +83,12 @@ class MealDetailsScreen extends ConsumerWidget {
                         child: Text(
                           ingredient,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                         ),
                       ))
                   .toList(),
@@ -109,13 +111,12 @@ class MealDetailsScreen extends ConsumerWidget {
                         child: Text(
                           step,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                         ),
                       ))
                   .toList(),
